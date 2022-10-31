@@ -1,4 +1,4 @@
-# Hardhat DeFi
+# Hardhat NFT
 
 This project is apart of the Hardhat FreeCodeCamp video. Thanks [@PatrickAlphaC](https://github.com/PatrickAlphaC) and [FreeCodeCamp]() for making this material avialable for Free!!!
 

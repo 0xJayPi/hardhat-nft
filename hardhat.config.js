@@ -26,7 +26,7 @@ module.exports = {
     networks: {
         hardhat: {
             chainId: 31337,
-            forking: { url: MAINNET_RPC_URL },
+            // forking: { url: MAINNET_RPC_URL },
             // blockNumber: 1200000, // tests should be done with a fixed block to prevent using different blockchain states between each of them
         },
         localhost: {
@@ -37,7 +37,7 @@ module.exports = {
             accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
             saveDeployments: true,
             chainId: 5,
-            blockConfirmations: 6,
+            blockConfirmations: 2,
         },
     },
     etherscan: {
