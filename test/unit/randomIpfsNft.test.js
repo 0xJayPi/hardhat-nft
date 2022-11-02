@@ -67,7 +67,6 @@ const tokenUris = [
                               const tokenCounter = await randomIpfsNft.s_tokenCounter()
 
                               assert.equal(tokenCounter.toString(), "1")
-
                               resolve()
                           } catch (e) {
                               console.log(e)
