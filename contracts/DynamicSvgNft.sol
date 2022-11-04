@@ -5,6 +5,8 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "base64-sol/base64.sol";
 
+error DynamicSvgNft__TokenDoesNotExist();
+
 contract DynamicSvgNft is ERC721 {
     uint256 private s_tokenCounter;
     string private i_lowImageURI;
@@ -32,8 +34,8 @@ contract DynamicSvgNft is ERC721 {
     }
 
     function mintNft(int256 highValue) public {
-        s_tokenIdToHighValue[s_tokenCounter] = highValue;
         s_tokenCounter++;
+        s_tokenIdToHighValue[s_tokenCounter] = highValue;
         _safeMint(msg.sender, s_tokenCounter);
         emit CreatedNFT(s_tokenCounter, highValue);
     }
@@ -43,7 +45,9 @@ contract DynamicSvgNft is ERC721 {
     }
 
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
-        require(_exists(tokenId), "URI Query for nonexistent token"); // function from the ERC721 contract
+        if (tokenId > 1) {
+            revert DynamicSvgNft__TokenDoesNotExist();
+        }
 
         (, int256 price, , , ) = i_priceFeed.latestRoundData();
         string memory imageURI = i_lowImageURI;
@@ -55,19 +59,43 @@ contract DynamicSvgNft is ERC721 {
         return
             string(
                 abi.encodePacked(
+                    _baseURI(),
                     Base64.encode(
                         bytes(
-                            abi.encodePacked(
-                                '{"name":"',
-                                name(),
-                                '", "description":"An NFT that changes values based on Chainlink Feed", ',
-                                '"attributes": [{"trait_type": "coolness", "value": 100}], "image":"',
-                                imageURI,
-                                '"}"'
+                            string(
+                                abi.encodePacked(
+                                    '{"name":"',
+                                    name(),
+                                    '", "description":"An NFT that changes values based on Chainlink Feed", ',
+                                    '"attributes": [{"trait_type": "coolness", "value": 100}], "image":"',
+                                    imageURI,
+                                    '"}"'
+                                )
                             )
                         )
                     )
                 )
             );
+    }
+
+    // getters
+    function getLowImageURI() public view returns (string memory) {
+        return i_lowImageURI;
+    }
+
+    function getHighImageURI() public view returns (string memory) {
+        return i_highImageURI;
+    }
+
+    function getTokenCounter() public view returns (uint256) {
+        return s_tokenCounter;
+    }
+
+    function getBase64EncodedSvgPrefix() public pure returns (string memory) {
+        return base64EncodedSvgPrefix;
+    }
+
+    function getTokenIdToHighValue(uint256 index) public view returns (int256) {
+        return s_tokenIdToHighValue[index];
     }
 }
