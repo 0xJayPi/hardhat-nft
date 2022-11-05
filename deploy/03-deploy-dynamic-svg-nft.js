@@ -6,21 +6,22 @@ const fs = require("fs")
 module.exports = async function ({ getNamedAccounts, deployments }) {
     const { deploy, log } = deployments
     const { deployer } = await getNamedAccounts()
+    const chainId = network.config.chainId
 
-    let ethUdsPriceFeedAddress
+    let ethUsdPriceFeedAddress
 
     if (developmentChains.includes(network.name)) {
         const ethUsdAggregator = await ethers.getContract("MockV3Aggregator")
-        ethUdsPriceFeedAddress = ethUsdAggregator.address
+        ethUsdPriceFeedAddress = ethUsdAggregator.address
     } else {
-        ethUdsPriceFeedAddress = networkConfig(chainId).ethUdsPriceFeed
+        ethUsdPriceFeedAddress = networkConfig[chainId].ethUsdPriceFeed
     }
 
     log("-------------------------------")
 
     const lowSVG = fs.readFileSync("./images/dynamicNFT/frown.svg", { encoding: "utf8" })
     const highSVG = fs.readFileSync("./images/dynamicNFT/happy.svg", { encoding: "utf8" })
-    arguments = [ethUdsPriceFeedAddress, lowSVG, highSVG]
+    arguments = [ethUsdPriceFeedAddress, lowSVG, highSVG]
 
     const dynamicSvgNft = await deploy("DynamicSvgNft", {
         from: deployer,

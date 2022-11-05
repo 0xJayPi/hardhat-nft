@@ -20,7 +20,7 @@ const tokenUris = [
               vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock")
               subscriptionId = await randomIpfsNft.getSubscriptionId()
               enterFee = await randomIpfsNft.getMintFee()
-              await vrfCoordinatorV2Mock.addConsumer(subscriptionId, randomIpfsNft.address) // the contract needs to be added as consumer for the VRF mock
+              //   await vrfCoordinatorV2Mock.addConsumer(subscriptionId, randomIpfsNft.address) // the contract needs to be added as consumer for the VRF mock
           })
 
           describe("constructor", () => {

@@ -24,14 +24,14 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     const { deploy, log } = deployments
     const { deployer } = await getNamedAccounts()
     const chainId = network.config.chainId
-    let vrfCoordinatorV2Address, subscriptionId
+    let vrfCoordinatorV2Address, subscriptionId, vrfCoordinatorV2Mock
 
     if (process.env.UPLOAD_TO_PINATA == "true") {
         tokenUris = await handleTokenUris()
     }
 
     if (developmentChains.includes(network.name)) {
-        const vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock")
+        vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock")
         vrfCoordinatorV2Address = vrfCoordinatorV2Mock.address
         const txResponse = await vrfCoordinatorV2Mock.createSubscription()
         const txReceipt = await txResponse.wait(1)
@@ -39,7 +39,7 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
         await vrfCoordinatorV2Mock.fundSubscription(subscriptionId, FUND_AMOUNT)
     } else {
         vrfCoordinatorV2Address = networkConfig[chainId].vrfCoordinatorV2
-        subscriptionId = networkConfig[chainId].subscription
+        subscriptionId = networkConfig[chainId].subscriptionId
     }
 
     log("-------------------------------")
@@ -59,6 +59,10 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
         log: true,
         waitConfirmations: network.config.blockConfirmations || 1,
     })
+
+    if (developmentChains.includes(network.name)) {
+        await vrfCoordinatorV2Mock.addConsumer(subscriptionId, randomIpfsNft.address) // the contract needs to be added as consumer for the VRF mock
+    }
 
     log("-------------------------------")
 

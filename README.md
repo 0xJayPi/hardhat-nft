@@ -4,6 +4,23 @@ This project is part of the Hardhat FreeCodeCamp video. Thanks [@PatrickAlphaC](
 
 Checkout the full blockchain course video [here](https://www.youtube.com/watch?v=gyMwXuJrbJQ). Plus the full repo [here](https://github.com/smartcontractkit/full-blockchain-solidity-course-js).
 
+# Testnet Deployments
+
+Goerli
+
+```
+"BasicNft" at 0x2742096adFBD509b76B6a1596d636544ebB8dAfD
+"RandomIpfsNft" at 0x0E09111F9A54B9d9C3A898204Ee6799E6854D6fe
+"DynamicSvgNft" at 0x9095f5F2A2e842F4F3C020aeb3284153f82AEf6B
+```
+
+OpenSea Collections
+
+```
+"BasicNft" at https://testnets.opensea.io/collection/dogie-dv2n7ckqbp
+"DynamicSvgNft" at https://testnets.opensea.io/collection/dynamic-svg-nft-m1blxagcer
+```
+
 # Getting Started
 
 ## Requirements

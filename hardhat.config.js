@@ -37,7 +37,9 @@ module.exports = {
             accounts: PRIVATE_KEY !== undefined ? [PRIVATE_KEY] : [],
             saveDeployments: true,
             chainId: 5,
-            blockConfirmations: 2,
+            blockConfirmations: 4,
+            gas: 2100000,
+            gasPrice: 8000000000,
         },
     },
     etherscan: {
@@ -62,6 +64,7 @@ module.exports = {
     solidity: {
         compilers: [
             { version: "0.8.7" },
+            { version: "0.8.8" },
             { version: "0.4.19" },
             { version: "0.6.12" },
             { version: "0.6.6" },
